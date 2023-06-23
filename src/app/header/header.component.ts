@@ -10,7 +10,7 @@ import { UserService } from '../_services/user.service';
 })
 export class HeaderComponent implements OnInit {
   constructor(
-    private userAuthService: UserAuthService,
+    private userAuthService: UserAuthService, 
     private router: Router,
     public userService: UserService
   ) {}
@@ -23,7 +23,18 @@ export class HeaderComponent implements OnInit {
 
   public logout() {
     this.userAuthService.clear();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
+
+  public isAdmin(){
+   return this.userAuthService.isAdmin();
+
+  }
+
+  public isUser(){
+    return this.userAuthService.isUser();
+  }
+
+ 
 
 }

@@ -11,9 +11,10 @@ import { Observable, throwError } from 'rxjs';
 import { UserAuthService } from '../_services/user-auth.service';
 import { Injectable } from '@angular/core';
 
+
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private userAuthService: UserAuthService,
+  constructor(private userAuthService: UserAuthService,  
     private router:Router) {}
 
   intercept(
@@ -26,7 +27,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
     const token = this.userAuthService.getToken();
 
-    req = this.addToken(req, token);
+    if(token){
+      req = this.addToken(req, token);    }
+   
+    
 
     return next.handle(req).pipe(
         catchError(
@@ -36,7 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     this.router.navigate(['/login']);
                 } else if(err.status === 403) {
                     this.router.navigate(['/forbidden']);
-                }
+                } 
                 return throwError("Some thing is wrong");
             }
         )

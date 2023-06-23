@@ -15,7 +15,7 @@ import { UserService } from '../_services/user.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private userAuthService: UserAuthService,
+    private userAuthService: UserAuthService, 
     private router: Router,
     private userService: UserService
   ) {}
@@ -38,12 +38,15 @@ export class AuthGuard implements CanActivate {
           return true;
         } else {
           this.router.navigate(['/forbidden']);
+        //  this.router.navigateByUrl('/abc').then(()=>{
+        //   this.router.navigate(['/forbidden']);
+        //  });
           return false;
         }
       }
     }
 
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']); 
     return false;
   }
 }
