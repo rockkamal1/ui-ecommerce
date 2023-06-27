@@ -52,14 +52,14 @@ export class BuyProductComponent implements OnInit {
         console.log(resp);
         orderForm.reset();
 
-        const ngZone=this.injector.get(NgZone);
+        const ngZone = this.injector.get(NgZone);
         ngZone.run(
-          ()=>{
+          () => {
             this.router.navigate(["/orderConfirm"])
           }
         );
 
-       
+
 
       },
       (err) => {
@@ -106,22 +106,22 @@ export class BuyProductComponent implements OnInit {
     return grandTotal;
   }
 
-  createTransactionAndPlaceOrder(orderForm : NgForm){
-      let amount=this.getCalculatedGrandTotal();
+  createTransactionAndPlaceOrder(orderForm: NgForm) {
+    let amount = this.getCalculatedGrandTotal();
     this.productService.createTransaction(amount).subscribe(
-      (response)=>{
-      console.log(response);
-      this.openTransactionModal(response,orderForm);
-      
-      },(err)=>{
+      (response) => {
+        console.log(response);
+        this.openTransactionModal(response, orderForm);
+
+      }, (err) => {
         console.log(err);
-        
+
       }
     )
 
   }
 
-  openTransactionModal(response: any,orderForm: NgForm){
+  openTransactionModal(response: any, orderForm: NgForm) {
     var options = {
       order_id: response.orderId,
       key: response.key,
@@ -130,14 +130,14 @@ export class BuyProductComponent implements OnInit {
       name: 'BluethinkInc',
       description: 'Payment of online shopping',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1gb2ZZJPbzWeq2q86hOUt1_A7h6oYBAK1fQ&usqp=CAU.jpg',
-      handler: (response: any) =>{
-        if(response !=null && response.razorpay_payment_id != null){
-          this.processResponse(response,orderForm);
-        }else{
+      handler: (response: any) => {
+        if (response != null && response.razorpay_payment_id != null) {
+          this.processResponse(response, orderForm);
+        } else {
           alert("Payment failed...")
         }
-         
-       
+
+
 
       },
       prefill: {
@@ -153,15 +153,15 @@ export class BuyProductComponent implements OnInit {
       }
 
     };
-         var razorPayObject= new Razorpay(options);
-         razorPayObject.open();
+    var razorPayObject = new Razorpay(options);
+    razorPayObject.open();
 
   }
 
-  processResponse(resp: any,orderForm: NgForm){
-    this.orderDetails.transactionId=resp.razorpay_payment_id;
-   this.placeOrder(orderForm);
-    
+  processResponse(resp: any, orderForm: NgForm) {
+    this.orderDetails.transactionId = resp.razorpay_payment_id;
+    this.placeOrder(orderForm);
+
   }
 
 }
